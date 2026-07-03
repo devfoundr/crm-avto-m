@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CRM кузовного автосервиса — кликабельный макет</title>
+<style>
+  :root{
+    --surface-2:#ffffff;
+    --surface-1:#F1EFE8;
+    --surface-0:#FAFAF8;
+    --text-primary:#1A1A1A;
+    --text-secondary:#5F5E5A;
+    --text-muted:#888780;
+    --text-accent:#C81E1E;
+    --text-danger:#A32D2D;
+    --border:rgba(0,0,0,0.10);
+    --border-strong:rgba(0,0,0,0.22);
+    --border-stronger:rgba(0,0,0,0.4);
+    --radius:8px;
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --fill-success:#639922;
+    --fill-field:#ffffff;
+    --bg-accent:#FCEBEA;
+    --brand-red:#C81E1E;
+    --brand-black:#161616;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--surface-0); color:var(--text-primary); font-family:var(--font-sans); }
+  body{ padding:24px; max-width:900px; margin:0 auto; }
+  h1{ font-size:20px; font-weight:500; margin:0 0 4px; }
+  .subtitle{ font-size:13px; color:var(--text-secondary); margin:0 0 20px; }
+  .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+  button{
+    font-family:var(--font-sans); font-size:14px; background:transparent; color:var(--text-primary);
+    border:0.5px solid var(--border-strong); border-radius:var(--radius); padding:8px 14px; cursor:pointer;
+  }
+  button:hover{ background:var(--surface-1); }
+  button:active{ transform:scale(0.98); }
+  .btn-primary{ background:var(--brand-red); color:#fff; border-color:var(--brand-red); font-weight:500; }
+  .btn-primary:hover{ background:#B01919; border-color:#B01919; }
+  .tab-btn.tab-active{ background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red); font-weight:500; }
+  .employee-btn.emp-active, .filter-btn.filter-active{ background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red); }
+  .brand-header{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
+  .brand-header svg{ height:34px; width:auto; flex-shrink:0; }
+  .brand-wordmark{ font-size:20px; font-weight:800; letter-spacing:0.2px; line-height:1; }
+  .brand-wordmark .b{ color:var(--brand-black); }
+  .brand-wordmark .r{ color:var(--brand-red); }
+  .brand-divider{ width:1px; height:26px; background:var(--border-strong); margin:0 2px; }
+  .brand-header h1{ margin:0; }
+  input[type="text"], select, textarea{
+    font-family:var(--font-sans); font-size:14px; color:var(--text-primary);
+    border:0.5px solid var(--border); border-radius:var(--radius); background:var(--fill-field);
+    height:36px; padding:0 10px;
+  }
+  textarea{ height:auto; padding:8px 10px; }
+  select{ width:100%; }
+  input[type="checkbox"]{ accent-color:var(--text-primary); }
+  table{ border-collapse:collapse; }
+  a{ color:var(--text-accent); }
+
+  .c-purple{ background:#EEEDFE; color:#3C3489; }
+  .c-teal{ background:#E1F5EE; color:#085041; }
+  .c-coral{ background:#FAECE7; color:#712B13; }
+  .c-pink{ background:#FBEAF0; color:#72243E; }
+  .c-gray{ background:#F1EFE8; color:#444441; }
+  .c-blue{ background:#E6F1FB; color:#0C447C; }
+  .c-green{ background:#EAF3DE; color:#27500A; }
+  .c-amber{ background:#FAEEDA; color:#633806; }
+  .c-red{ background:#FCEBEB; color:#791F1F; }
+</style>
+</head>
+<body>
+
+<div class="brand-header">
+  <svg viewBox="-20 -20 4187 1360" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+  <g transform="translate(0,2127) scale(0.1,-0.1)" stroke="none">
+  <path fill="#161616" d="M15485 21109 c-2059 -92 -4087 -353 -5960 -765 -1603 -353 -3171
+  -808 -5590 -1622 -357 -120 -713 -234 -790 -253 -126 -31 -154 -34 -280 -34
+  l-140 1 -140 50 c-400 145 -778 237 -1095 265 -442 39 -720 -103 -738 -376 -3
+  -50 1 -90 13 -130 22 -77 126 -284 233 -465 96 -162 131 -239 132 -287 0 -20
+  -20 -70 -51 -129 -159 -302 -334 -756 -426 -1104 l-38 -145 -50 -32 c-132 -84
+  -193 -148 -277 -291 -198 -332 -263 -841 -202 -1577 40 -486 130 -925 345
+  -1690 49 -176 110 -392 135 -480 97 -348 237 -541 479 -661 85 -41 447 -163
+  1515 -510 907 -295 1260 -387 1561 -409 l95 -7 54 -106 c466 -903 1250 -1581
+  2190 -1895 638 -213 1350 -255 2002 -117 612 129 1171 400 1658 803 187 155
+  438 417 589 616 l64 84 641 -7 641 -7 1252 1690 c689 930 1254 1695 1255 1702
+  2 6 -59 35 -142 66 -190 71 -227 106 -218 205 5 43 18 64 124 205 156 207 170
+  222 229 249 79 38 121 32 310 -38 160 -59 166 -61 180 -42 7 10 97 132 199
+  269 102 138 186 253 186 256 0 7 -221 92 -226 87 -1 -2 -13 -32 -27 -67 -33
+  -89 -40 -92 -140 -57 -88 31 -117 50 -116 75 0 9 37 113 82 231 96 251 85 242
+  222 187 94 -38 98 -47 64 -139 -12 -34 -18 -63 -13 -67 12 -11 264 -105 268
+  -100 1 2 22 30 46 62 48 65 100 97 156 97 24 0 208 -64 508 -176 259 -97 476
+  -179 481 -181 6 -2 21 26 34 62 38 108 91 155 173 155 25 -1 86 -17 143 -39
+  l100 -38 11 37 c25 80 58 122 121 154 88 44 194 25 261 -48 55 -60 66 -100 59
+  -215 l-7 -96 167 -62 c92 -34 168 -61 169 -60 1 1 -8 121 -20 266 l-21 265
+  -66 -3 c-46 -2 -69 2 -77 12 -7 8 -22 141 -37 325 -20 244 -30 326 -47 378
+  -42 127 -80 167 -634 649 -282 244 -531 466 -554 492 -97 110 -166 233 -205
+  370 -31 103 -22 11 -179 1988 l-111 1410 -57 -3 c-67 -4 -94 3 -108 28 -5 10
+  -21 168 -35 352 -14 183 -28 348 -31 366 -6 37 21 35 -299 21z m-7345 -5935
+  c609 -77 1187 -320 1671 -705 126 -100 353 -321 457 -444 558 -663 829 -1496
+  761 -2346 -98 -1236 -899 -2311 -2071 -2778 -965 -385 -2073 -298 -2966 233
+  -851 507 -1431 1364 -1572 2326 -10 69 -21 171 -24 226 l-5 99 14 -105 c112
+  -799 497 -1481 1115 -1977 697 -559 1626 -822 2535 -718 1037 119 1959 756
+  2425 1675 156 309 250 598 301 930 30 196 37 543 15 757 -138 1336 -1107 2417
+  -2471 2757 -132 33 -241 53 -405 77 l-135 19 120 -6 c66 -3 172 -12 235 -20z"/>
+  <path fill="#D9291C" d="M19736 20758 c9 -98 -6 -117 -94 -125 -61 -6 -62 -6 -62 -36 0 -17
+  57 -742 126 -1611 133 -1673 136 -1734 100 -1871 -24 -87 -62 -180 -106 -255
+  -21 -36 -237 -304 -480 -595 -243 -292 -455 -552 -471 -580 -40 -69 -69 -166
+  -69 -234 0 -31 10 -186 22 -345 l22 -288 -23 -19 c-16 -13 -39 -19 -72 -19
+  l-49 0 0 -37 c0 -75 61 -798 68 -804 5 -5 271 -106 489 -186 6 -3 20 16 32 41
+  34 78 39 78 271 -9 113 -42 211 -81 217 -87 21 -17 15 -61 -22 -159 -20 -51
+  -32 -96 -28 -100 4 -4 82 -35 172 -69 185 -69 202 -79 232 -126 28 -46 22
+  -124 -18 -229 l-31 -81 186 -70 c241 -90 232 -77 168 -250 -27 -71 -55 -137
+  -64 -146 -24 -29 -60 -22 -243 47 -95 36 -176 62 -179 58 -4 -5 -20 -42 -35
+  -83 -38 -103 -61 -137 -106 -160 -60 -31 -99 -25 -287 45 -96 36 -176 64 -178
+  63 -2 -2 -19 -46 -39 -98 -40 -104 -58 -130 -89 -130 -12 1 -109 34 -216 74
+  -227 86 -243 98 -217 164 l16 40 -567 213 c-312 116 -574 214 -584 217 -18 4
+  -17 10 -38 -288 -14 -195 -37 -358 -65 -455 -13 -44 -154 -391 -313 -771 -160
+  -380 -295 -709 -301 -730 -6 -22 -11 -71 -11 -110 0 -116 36 -189 119 -245 54
+  -35 187 -79 241 -79 112 0 137 -72 45 -126 -227 -133 -528 -53 -689 183 -86
+  126 -124 296 -97 434 7 34 134 408 282 830 247 701 285 821 303 945 l6 41
+  -127 47 c-70 26 -129 43 -131 38 -15 -46 -50 -97 -68 -100 -12 -2 -82 20 -157
+  48 l-135 51 -26 -26 c-14 -14 -35 -25 -46 -25 -12 0 -120 37 -241 82 -120 44
+  -221 79 -223 77 -52 -61 -1048 -1418 -1064 -1451 -19 -37 -22 -55 -17 -87 12
+  -73 47 -99 385 -282 173 -93 325 -181 338 -195 12 -14 22 -34 22 -45 0 -27
+  -44 -69 -72 -69 -13 0 -221 74 -462 165 -241 91 -444 165 -450 165 -10 0 -825
+  -1085 -834 -1109 -1 -4 2089 -11 4645 -14 2556 -4 6489 -10 8740 -14 l4092 -6
+  88 -111 c105 -133 339 -375 479 -496 585 -504 1287 -813 2064 -907 202 -24
+  657 -24 860 0 376 46 768 152 1100 297 557 244 1076 643 1453 1117 65 83 87
+  104 112 107 16 3 149 10 295 16 1079 45 2141 127 3105 240 409 48 537 80 612
+  154 73 73 71 157 -4 237 -37 40 -79 66 -210 132 -160 80 -164 83 -174 122 -23
+  85 14 313 156 955 51 234 101 464 110 511 14 76 15 198 13 1005 -3 911 -4 920
+  -25 996 -70 248 -159 371 -382 527 -530 372 -1200 767 -1688 995 -276 129
+  -466 205 -1008 403 -1243 454 -1997 651 -3483 908 -1894 328 -4531 635 -6560
+  765 l-313 20 -337 176 c-766 399 -1697 852 -2337 1136 -983 437 -2422 989
+  -3190 1223 -489 149 -999 278 -1520 385 -251 51 -621 120 -647 120 -17 0 -18
+  -5 -12 -72z m18778 -5182 c654 -223 1471 -653 2021 -1063 297 -221 368 -314
+  280 -365 -107 -62 -509 -34 -785 54 -193 62 -521 219 -765 365 -668 402 -1188
+  912 -1067 1046 15 17 27 19 97 15 61 -4 112 -16 219 -52z m-3829 -401 c718
+  -96 1368 -410 1883 -910 307 -298 505 -571 686 -945 155 -323 252 -657 298
+  -1035 20 -164 16 -586 -6 -750 -102 -744 -413 -1374 -935 -1895 -537 -536
+  -1203 -859 -1976 -957 -190 -24 -605 -24 -790 0 -778 102 -1436 419 -1971 952
+  -565 563 -892 1269 -954 2062 -7 83 -10 157 -7 165 3 7 6 -1 6 -19 2 -63 32
+  -270 57 -392 152 -740 565 -1379 1191 -1843 271 -202 641 -388 975 -492 647
+  -202 1340 -214 1948 -34 821 243 1530 829 1917 1584 326 636 416 1300 272
+  1998 -114 546 -401 1083 -806 1507 -535 558 -1256 911 -2073 1014 l-115 15
+  140 -5 c77 -2 194 -11 260 -20z"/>
+  <path fill="#161616" d="M16735 13073 c-46 -60 -85 -110 -85 -113 0 -3 37 -18 82 -35 44 -16
+  86 -38 92 -47 8 -13 6 -30 -8 -68 -10 -28 -16 -53 -14 -55 2 -3 51 -22 109
+  -44 l104 -39 6 74 c4 41 8 139 10 216 l4 142 -100 38 c-55 21 -103 38 -107 38
+  -4 0 -46 -48 -93 -107z"/>
+  </g>
+  </svg>
+  <div class="brand-divider"></div>
+  <div>
+    <h1><span class="brand-wordmark"><span class="b">АВТО</span><span class="r">-М</span></span> · CRM кузовного автосервиса</h1>
+  </div>
+</div>
+
+<div id="tabs" style="display:flex; gap:8px; margin-bottom:1rem; flex-wrap:wrap;">
+  <button data-tab="board" class="tab-btn">Доска цеха</button>
+  <button data-tab="intake" class="tab-btn">Приёмка заказа</button>
+  <button data-tab="detail" class="tab-btn">Карточка заказа</button>
+  <button data-tab="procurement" class="tab-btn">Снабжение</button>
+  <button data-tab="worklog" class="tab-btn">Отметка работ</button>
+  <button data-tab="history" class="tab-btn">История по авто</button>
+</div>
+
+<div id="screen-board">
+  <div style="display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:10px;" id="board"></div>
+</div>
+
+<div id="screen-intake">
+  <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
+    <div style="font-size:15px; font-weight:500; margin-bottom:12px;">Новый заказ</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+      <div><label style="font-size:12px; color:var(--text-secondary); display:block; margin-bottom:4px;">Автомобиль</label><input type="text" value="Skoda Kodiaq Active, К147ХО152" style="width:100%;" /></div>
+      <div><label style="font-size:12px; color:var(--text-secondary); display:block; margin-bottom:4px;">Страховая компания</label><input type="text" value="ПАО Группа Ренессанс Страхование" style="width:100%;" /></div>
+    </div>
+    <div style="border:1px dashed var(--border-strong); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:10px; margin-bottom:16px; color:var(--text-secondary); font-size:13px;">
+      <span style="font-size:18px;" aria-hidden="true">📎</span>
+      Калькуляция_OSG-26-074050.pdf приложена как основание — сама по себе в наряд не превращается
+    </div>
+    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">Мастер вносит только то, что реально идёт в работу — без вычёркивания лишнего</div>
+    <div id="intake-items" style="margin-bottom:10px;"></div>
+    <div style="display:flex; gap:8px; align-items:flex-end;">
+      <div style="flex:1;"><label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Наименование позиции</label><input type="text" id="new-item-name" placeholder="Крыло П Л — заменить" style="width:100%;" /></div>
+      <div style="width:120px;"><label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Тип</label>
+        <select id="new-item-type" style="width:100%;">
+          <option value="Деталь">Деталь</option>
+          <option value="Работа">Работа</option>
+        </select>
+      </div>
+      <button id="add-item-btn" aria-label="Добавить позицию" style="font-size:16px; font-weight:700;">+</button>
+    </div>
+    <button class="btn-primary" style="margin-top:16px;" id="create-order-btn"><span style="margin-right:4px;" aria-hidden="true">✓</span>Сформировать наряд-заказ</button>
+  </div>
+</div>
+
+<div id="screen-detail"></div>
+
+<div id="screen-procurement">
+  <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
+    <div style="font-size:15px; font-weight:500; margin-bottom:4px;">Снабжение — очередь по всем заказам</div>
+    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Экран Егора, по одной группе на каждый автомобиль с доски цеха. Клик по статусу переключает его — сразу видно мастеру и цеху в урезанном виде, без артикула и цены.</div>
+    <div id="procurement-filters" style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;"></div>
+    <div id="procurement-list"></div>
+  </div>
+</div>
+
+<div id="screen-worklog">
+  <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem; margin-bottom:12px;">
+    <div style="font-size:15px; font-weight:500; margin-bottom:4px;">1. Кто у терминала</div>
+    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Сотрудник подтверждает себя бейджем/PIN.</div>
+    <div id="employee-picker" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+  </div>
+
+  <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem; margin-bottom:12px;">
+    <div style="font-size:15px; font-weight:500; margin-bottom:2px;">2. Новая запись</div>
+    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Выбирает машину и своими словами пишет, что сделал — как раньше в тетради.</div>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Машина</label>
+      <select id="worklog-car-select" style="width:100%;"></select>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Что сделали</label>
+      <textarea id="worklog-text" rows="3" style="width:100%; font-family:var(--font-sans); font-size:14px; padding:8px 10px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--fill-field); resize:vertical;" placeholder="Передний бампер - снятие, разборка, ремонт. Переднее левое крыло - снятие, ремонт"></textarea>
+    </div>
+    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:12px;">
+      <input type="checkbox" id="worklog-rework" style="width:16px; height:16px;" /> Это переделка
+    </label>
+    <button class="btn-primary" id="save-worklog-btn"><span style="margin-right:4px;" aria-hidden="true">✓</span>Сохранить запись</button>
+  </div>
+
+  <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
+    <div style="font-size:15px; font-weight:500; margin-bottom:2px;">3. Мой блокнот</div>
+    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">То, что раньше писали от руки в тетради. Каждая сохранённая запись падает сюда сама, с датой.</div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse;" id="my-notebook-table"></table>
+  </div>
+</div>
+
+<div id="screen-history">
+  <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
+    <div style="font-size:15px; font-weight:500; margin-bottom:10px;">Все работы по конкретному авто</div>
+    <select id="history-car-select" style="width:100%; margin-bottom:14px;"></select>
+    <div id="history-summary" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;"></div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse;" id="history-table"></table>
+  </div>
+</div>
+
+<script>
+(function(){
+
+var stages = [
+  {id:"reception", name:"Приёмка"},
+  {id:"metal", name:"Жестяной цех"},
+  {id:"paint", name:"Малярный цех"},
+  {id:"disasm", name:"Разборка/сборка"},
+  {id:"ready", name:"На выдачу"}
+];
+
+var orders = [
+  {
+    id:1, model:"Skoda Kodiaq Active", plate:"К147ХО152", insurer:"Ренессанс Страхование",
+    due:"09.07.2026", stage:"reception", alert:false,
+    items:[
+      {name:"Бампер П - заменить", done:false, procurement:"ordered"},
+      {name:"Молдинг бампер П Л - заменить", done:false, procurement:"not_ordered"},
+      {name:"Спойлер бампера П - заменить", done:false, procurement:"not_ordered"},
+      {name:"Фара Л в сборе - заменить", done:false, procurement:"ordered"}
+    ]
+  },
+  {
+    id:2, model:"Kia Rio Белый", plate:"М601ТХ152", insurer:"СAO ВСК",
+    due:"08.07.2026", stage:"metal", alert:true,
+    items:[
+      {name:"Бампер зад - заменить", done:true, procurement:"arrived"},
+      {name:"Спойлер бампера зад - заменить", done:true, procurement:"transit"},
+      {name:"Крыло заднее прав - ремонт", done:false, procurement:"na"},
+      {name:"Уплотнитель крышки багажника - заменить", done:false, procurement:"ordered"},
+      {name:"Надпись Rio - заменить", done:false, procurement:"arrived"},
+      {name:"Эмблема KIA - заменить", done:false, procurement:"ordered"},
+      {name:"Отражатель зад прав - заменить", done:false, procurement:"transit"}
+    ]
+  },
+  {
+    id:3, model:"Nissan Tiida Серый", plate:"Y172YO152", insurer:"Ренессанс Страхование",
+    due:"29.06.2026", stage:"paint", alert:false,
+    items:[
+      {name:"Бампер зад - замена окраска", done:true, procurement:"na"},
+      {name:"Капот - ремонт окраска", done:true, procurement:"na"},
+      {name:"Крыло перед лев - ремонт окраска", done:true, procurement:"na"},
+      {name:"Крышка багажника - ремонт окраска", done:false, procurement:"na"}
+    ]
+  },
+  {
+    id:4, model:"Chery Tiggo 4 Pro", plate:"А332ХЕ252", insurer:"СAO ВСК",
+    due:"14.07.2026", stage:"disasm", alert:false,
+    items:[
+      {name:"Крышка багажника - заменить", done:true, procurement:"arrived"},
+      {name:"Фонарь зад нар л - заменить", done:false, procurement:"transit"},
+      {name:"АКБ - снять и установить", done:false, procurement:"na"}
+    ]
+  },
+  {
+    id:5, model:"Haval Jolion Белый", plate:"O517BC550", insurer:"Ренессанс Страхование",
+    due:"23.06.2026", stage:"ready", alert:false,
+    items:[
+      {name:"Бампер зад низ - ремонт окраска", done:true, procurement:"na"},
+      {name:"Щиток задка - замена окраска", done:true, procurement:"arrived"}
+    ]
+  }
+];
+
+var procurementQueue = [
+  {orderId:1, itemIdx:0, article:"565807221", price:"98 000", supplier:"STParts", term:"10-12 дней", status:"ordered"},
+  {orderId:1, itemIdx:1, article:"565853665C", price:"3 260", supplier:"STParts", term:"5 дней", status:"not_ordered"},
+  {orderId:1, itemIdx:2, article:"565807061", price:"19 360", supplier:"STParts", term:"5 дней", status:"not_ordered"},
+  {orderId:1, itemIdx:3, article:"566941015H", price:"136 625", supplier:"Авито", term:"7 дней", status:"ordered"},
+  {orderId:2, itemIdx:0, article:"866114Y000", price:"6 629", supplier:"АВТОСТЕЛС", term:"7 дней", status:"arrived"},
+  {orderId:2, itemIdx:1, article:"866124Y000", price:"2 210", supplier:"STParts", term:"7 дней", status:"transit"},
+  {orderId:2, itemIdx:3, article:"873214Y000", price:"1 840", supplier:"STParts", term:"7 дней", status:"ordered"},
+  {orderId:2, itemIdx:4, article:"863224Y000", price:"904", supplier:"АВТОСТЕЛС", term:"7 дней", status:"arrived"},
+  {orderId:2, itemIdx:5, article:"863104X000", price:"2 030", supplier:"STParts", term:"7 дней", status:"ordered"},
+  {orderId:2, itemIdx:6, article:"924064X000", price:"966", supplier:"STParts", term:"7 дней", status:"transit"},
+  {orderId:4, itemIdx:0, article:"552000261AADYJ", price:"90 671", supplier:"STParts", term:"14 дней", status:"arrived"},
+  {orderId:4, itemIdx:1, article:"J68-4433010", price:"22 462", supplier:"АВТОЛИГА", term:"10 дней", status:"transit"},
+  {orderId:5, itemIdx:1, article:"602000508AA", price:"4 300", supplier:"АВТОЛИГА", term:"5 дней", status:"arrived"}
+];
+
+var employees = ["Виктор", "Марат", "Алексей", "Денис"];
+var currentEmployee = null;
+var worklogCarId = 2;
+
+var worklog = [
+  {date:"02.07.2026", employee:"Алексей", orderId:2, car:"Kia Rio · М601ТХ152", text:"Бампер зад - повторная подгонка после деформации", type:"rework"},
+  {date:"01.07.2026", employee:"Марат", orderId:3, car:"Nissan Tiida · Y172YO152", text:"Бампер зад - подготовка, окраска", type:"done"},
+  {date:"01.07.2026", employee:"Виктор", orderId:2, car:"Kia Rio · М601ТХ152", text:"Спойлер бампера зад - снятие, ремонт", type:"done"},
+  {date:"30.06.2026", employee:"Виктор", orderId:2, car:"Kia Rio · М601ТХ152", text:"Бампер зад - снятие, разборка, ремонт", type:"done"}
+];
+
+var statusOrder = ["not_ordered","ordered","transit","arrived"];
+var statusMeta = {
+  not_ordered:{cls:"c-coral", label:"не заказана"},
+  ordered:{cls:"c-gray", label:"заказана"},
+  transit:{cls:"c-amber", label:"в пути"},
+  arrived:{cls:"c-teal", label:"в наличии"}
+};
+var activeFilter = "all";
+var currentOrderId = 2;
+var historyOrderId = 2;
+
+function procBadge(p){
+  if(p === "na") return "";
+  var m = statusMeta[p];
+  if(!m) return "";
+  return '<span class="'+m.cls+'" style="font-size:11px; padding:2px 6px; border-radius:4px; margin-left:6px; white-space:nowrap; display:inline-block;">'+m.label+'</span>';
+}
+
+function statusButton(p, orderId, itemIdx){
+  var m = statusMeta[p] || statusMeta.not_ordered;
+  return '<button class="status-btn '+m.cls+'" data-order="'+orderId+'" data-idx="'+itemIdx+'" style="font-size:11px; padding:4px 10px; border-radius:4px; white-space:nowrap;">'+m.label+'</button>';
+}
+
+function findOrder(id){
+  for(var i=0;i<orders.length;i++){ if(orders[i].id===id) return orders[i]; }
+  return null;
+}
+
+function stageIndex(stageId){
+  for(var i=0;i<stages.length;i++){ if(stages[i].id===stageId) return i; }
+  return -1;
+}
+
+function procurementPendingCount(orderId){
+  var n=0;
+  for(var i=0;i<procurementQueue.length;i++){
+    if(procurementQueue[i].orderId===orderId && procurementQueue[i].status!=="arrived") n++;
+  }
+  return n;
+}
+
+function renderCard(o){
+  var doneCount = 0;
+  for(var i=0;i<o.items.length;i++){ if(o.items[i].done) doneCount++; }
+  var pct = o.items.length ? Math.round(100*doneCount/o.items.length) : 0;
+  var alertHtml = o.alert ? '<div style="display:flex; align-items:center; gap:4px; font-size:11px; color:var(--text-danger); margin-bottom:6px;"><span aria-hidden="true">⚠</span>Вызвать мастера</div>' : "";
+
+  var idx = stageIndex(o.stage);
+  var pending = procurementPendingCount(o.id);
+  var pendingLabel = pending===1 ? "позиция" : (pending>=2 && pending<=4 ? "позиции" : "позиций");
+  var pendingBadge = pending>0
+    ? '<div style="margin-top:8px; padding-top:7px; border-top:0.5px dashed var(--border);"><span class="c-amber" title="'+pending+' '+pendingLabel+' по этой машине ещё в снабжении — цех её не ждёт" style="font-size:10px; font-weight:600; padding:3px 7px; border-radius:4px; white-space:nowrap;">в снабж.: '+pending+'</span></div>'
+    : '';
+
+  return '<div class="order-card" data-id="'+o.id+'" draggable="true" style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:10px; cursor:grab;">'
+    + alertHtml
+    + '<div style="font-size:13px; font-weight:500; margin-bottom:2px;">'+o.model+'</div>'
+    + '<div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">'+o.plate+'</div>'
+    + '<div style="height:4px; background:var(--surface-1); border-radius:4px; overflow:hidden; margin-bottom:6px;"><div style="height:100%; width:'+pct+'%; background:var(--fill-success);"></div></div>'
+    + '<div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-secondary);">'
+    + '<span>'+doneCount+'/'+o.items.length+'</span>'
+    + '<span><span style="margin-right:2px;" aria-hidden="true">📅</span>'+o.due+'</span>'
+    + '</div>'
+    + pendingBadge
+    + '</div>';
+}
+
+function renderBoard(){
+  var board = document.getElementById("board");
+  var html = "";
+  for(var s=0; s<stages.length; s++){
+    var stage = stages[s];
+    var list = [];
+    for(var i=0;i<orders.length;i++){ if(orders[i].stage===stage.id) list.push(orders[i]); }
+    var cardsHtml = "";
+    for(var j=0;j<list.length;j++){ cardsHtml += renderCard(list[j]); }
+    html += '<div style="display:flex; flex-direction:column; gap:8px;">'
+      + '<div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">'
+      + '<span style="font-size:12px; font-weight:500;">'+stage.name+'</span>'
+      + '<span style="font-size:11px; color:var(--text-muted);">'+list.length+'</span>'
+      + '</div>'
+      + '<div class="stage-column" data-stage="'+stage.id+'" style="display:flex; flex-direction:column; gap:8px; min-height:60px; border-radius:10px; padding:4px; border:1.5px dashed transparent; transition:background 0.1s, border-color 0.1s;">'
+      + cardsHtml
+      + '</div></div>';
+  }
+  board.innerHTML = html;
+
+  var cards = document.querySelectorAll(".order-card");
+  for(var k=0;k<cards.length;k++){
+    cards[k].addEventListener("click", function(){
+      currentOrderId = parseInt(this.getAttribute("data-id"), 10);
+      renderDetail();
+      showTab("detail");
+    });
+    cards[k].addEventListener("dragstart", function(e){
+      e.dataTransfer.setData("text/plain", this.getAttribute("data-id"));
+      e.dataTransfer.effectAllowed = "move";
+      this.style.opacity = "0.4";
+    });
+    cards[k].addEventListener("dragend", function(){
+      this.style.opacity = "1";
+    });
+  }
+
+  var columns = document.querySelectorAll(".stage-column");
+  for(var c=0;c<columns.length;c++){
+    columns[c].addEventListener("dragover", function(e){
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      this.style.background = "var(--bg-accent)";
+      this.style.borderColor = "var(--brand-red)";
+    });
+    columns[c].addEventListener("dragleave", function(){
+      this.style.background = "";
+      this.style.borderColor = "transparent";
+    });
+    columns[c].addEventListener("drop", function(e){
+      e.preventDefault();
+      this.style.background = "";
+      this.style.borderColor = "transparent";
+      var id = parseInt(e.dataTransfer.getData("text/plain"), 10);
+      var targetStage = this.getAttribute("data-stage");
+      var ord = findOrder(id);
+      if(ord && ord.stage !== targetStage){
+        ord.stage = targetStage;
+        renderBoard();
+      }
+    });
+  }
+}
+
+var intakeItems = [
+  {name:"Бампер П - заменить", type:"Деталь"},
+  {name:"Молдинг бампер П Л - заменить", type:"Деталь"},
+  {name:"Спойлер бампера П - заменить", type:"Деталь"},
+  {name:"Эмблема П - заменить", type:"Деталь"},
+  {name:"Фара Л в сборе - заменить", type:"Деталь"},
+  {name:"Крыло П Л - заменить", type:"Деталь"}
+];
+
+function renderIntake(){
+  var wrap = document.getElementById("intake-items");
+  if(intakeItems.length === 0){
+    wrap.innerHTML = '<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">Позиций пока нет — добавьте ниже</div>';
+    return;
+  }
+  var html = "";
+  for(var i=0;i<intakeItems.length;i++){
+    var it = intakeItems[i];
+    html += '<div style="display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:0.5px solid var(--border); font-size:13px;">'
+      + '<span style="flex:1;">'+it.name+'</span>'
+      + '<span style="font-size:11px; color:var(--text-secondary);">'+it.type+'</span>'
+      + '<button data-idx="'+i+'" class="remove-item-btn" aria-label="Удалить позицию" style="padding:4px 9px; font-size:13px; font-weight:700;">✕</button>'
+      + '</div>';
+  }
+  wrap.innerHTML = html;
+  var removeBtns = document.querySelectorAll(".remove-item-btn");
+  for(var j=0;j<removeBtns.length;j++){
+    removeBtns[j].addEventListener("click", function(){
+      intakeItems.splice(parseInt(this.getAttribute("data-idx"),10), 1);
+      renderIntake();
+    });
+  }
+}
+
+function renderDetail(){
+  var o = findOrder(currentOrderId);
+  if(!o) return;
+  var itemsHtml = "";
+  for(var idx=0; idx<o.items.length; idx++){
+    var it = o.items[idx];
+    itemsHtml += '<div style="display:flex; align-items:center; gap:8px; padding:9px 0; border-bottom:0.5px solid var(--border); font-size:13px;">'
+      + '<input type="checkbox" '+(it.done?"checked":"")+' data-idx="'+idx+'" class="detail-check" style="width:16px; height:16px;" />'
+      + '<span style="flex:1; '+(it.done?"color:var(--text-secondary); text-decoration:line-through;":"")+'">'+it.name+'</span>'
+      + procBadge(it.procurement)
+      + '<button data-idx="'+idx+'" class="photo-btn" style="padding:4px 8px; font-size:13px;">📷</button>'
+      + '</div>';
+  }
+
+  document.getElementById("screen-detail").innerHTML =
+    '<div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">'
+    + '<div style="font-size:15px; font-weight:500;">'+o.model+'</div>'
+    + '<div style="font-size:13px; color:var(--text-secondary); margin-bottom:4px;">'+o.plate+' &middot; '+o.insurer+'</div>'
+    + '<div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;"><span style="margin-right:3px;" aria-hidden="true">📅</span>Срок выдачи '+o.due+'</div>'
+    + '<div>'+itemsHtml+'</div>'
+    + '<div style="display:flex; gap:10px; margin-top:12px;">'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:11px; flex-direction:column; gap:4px;"><span style="font-size:20px;" aria-hidden="true">🖼</span>фото дефекта</div>'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:11px; flex-direction:column; gap:4px;"><span style="font-size:20px;" aria-hidden="true">🖼</span>фото результата</div>'
+    + '</div>'
+    + '</div>';
+
+  var checks = document.querySelectorAll(".detail-check");
+  for(var c=0;c<checks.length;c++){
+    checks[c].addEventListener("change", function(){
+      var i2 = parseInt(this.getAttribute("data-idx"), 10);
+      o.items[i2].done = this.checked;
+      renderBoard();
+      renderDetail();
+    });
+  }
+}
+
+function renderProcurementFilters(){
+  var filters = [["all","Все"],["not_ordered","не заказана"],["ordered","заказана"],["transit","в пути"],["arrived","в наличии"]];
+  var html = "";
+  for(var i=0;i<filters.length;i++){
+    var active = activeFilter === filters[i][0];
+    html += '<button class="filter-btn" data-filter="'+filters[i][0]+'" style="font-size:12px; padding:5px 10px; '+(active? "background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red);":"")+'">'+filters[i][1]+'</button>';
+  }
+  document.getElementById("procurement-filters").innerHTML = html;
+  var btns = document.querySelectorAll(".filter-btn");
+  for(var j=0;j<btns.length;j++){
+    btns[j].addEventListener("click", function(){
+      activeFilter = this.getAttribute("data-filter");
+      renderProcurement();
+    });
+  }
+}
+
+function renderProcurement(){
+  renderProcurementFilters();
+
+  var grouped = {};
+  var orderIds = [];
+  for(var i=0;i<procurementQueue.length;i++){
+    var q = procurementQueue[i];
+    if(activeFilter !== "all" && q.status !== activeFilter) continue;
+    if(!grouped[q.orderId]){ grouped[q.orderId] = []; orderIds.push(q.orderId); }
+    grouped[q.orderId].push(q);
+  }
+
+  var html = "";
+  if(orderIds.length === 0){
+    html = '<div style="font-size:12px; color:var(--text-muted); padding:12px 0;">Нет позиций с таким статусом</div>';
+  }
+  for(var g=0; g<orderIds.length; g++){
+    var oid = orderIds[g];
+    var o = findOrder(oid);
+    var rows = grouped[oid];
+    html += '<div style="margin-bottom:16px;">'
+      + '<div style="font-size:13px; font-weight:500; margin-bottom:6px;">'+o.model+' &middot; '+o.plate+'</div>'
+      + '<table style="width:100%; font-size:12px; border-collapse:collapse;">'
+      + '<tr>'
+      + '<th style="text-align:left; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Деталь</th>'
+      + '<th style="text-align:left; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Артикул</th>'
+      + '<th style="text-align:right; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Цена</th>'
+      + '<th style="text-align:left; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Поставщик</th>'
+      + '<th style="text-align:left; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Срок</th>'
+      + '<th style="text-align:right; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Статус</th>'
+      + '</tr>';
+    for(var r=0;r<rows.length;r++){
+      var q2 = rows[r];
+      var itemName = o.items[q2.itemIdx].name;
+      html += '<tr>'
+        + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border);">'+itemName+'</td>'
+        + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary);">'+q2.article+'</td>'
+        + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); text-align:right;">'+q2.price+'</td>'
+        + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary);">'+q2.supplier+'</td>'
+        + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary);">'+q2.term+'</td>'
+        + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); text-align:right;">'+statusButton(q2.status, q2.orderId, q2.itemIdx)+'</td>'
+        + '</tr>';
+    }
+    html += '</table></div>';
+  }
+  document.getElementById("procurement-list").innerHTML = html;
+
+  var statusBtns = document.querySelectorAll(".status-btn");
+  for(var s=0;s<statusBtns.length;s++){
+    statusBtns[s].addEventListener("click", function(){
+      var oid2 = parseInt(this.getAttribute("data-order"), 10);
+      var idx2 = parseInt(this.getAttribute("data-idx"), 10);
+      for(var p=0;p<procurementQueue.length;p++){
+        if(procurementQueue[p].orderId === oid2 && procurementQueue[p].itemIdx === idx2){
+          var cur = procurementQueue[p].status;
+          var next = statusOrder[(statusOrder.indexOf(cur)+1) % statusOrder.length];
+          procurementQueue[p].status = next;
+          var ord = findOrder(oid2);
+          ord.items[idx2].procurement = next;
+        }
+      }
+      renderProcurement();
+      renderBoard();
+      renderDetail();
+    });
+  }
+}
+
+function renderEmployeePicker(){
+  var html = "";
+  for(var i=0;i<employees.length;i++){
+    var active = employees[i] === currentEmployee;
+    html += '<button class="employee-btn" data-name="'+employees[i]+'" style="font-size:13px; padding:8px 14px; '+(active? "background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red);":"")+'"><span style="margin-right:5px;" aria-hidden="true">👤</span>'+employees[i]+'</button>';
+  }
+  document.getElementById("employee-picker").innerHTML = html;
+  var btns = document.querySelectorAll(".employee-btn");
+  for(var j=0;j<btns.length;j++){
+    btns[j].addEventListener("click", function(){
+      currentEmployee = this.getAttribute("data-name");
+      renderMyNotebook();
+    });
+  }
+}
+
+function renderWorklogCarSelect(){
+  var sel = document.getElementById("worklog-car-select");
+  var html = "";
+  for(var i=0;i<orders.length;i++){
+    html += '<option value="'+orders[i].id+'" '+(orders[i].id===worklogCarId?"selected":"")+'>'+orders[i].model+' · '+orders[i].plate+'</option>';
+  }
+  sel.innerHTML = html;
+  sel.addEventListener("change", function(){
+    worklogCarId = parseInt(this.value, 10);
+  });
+}
+
+function renderMyNotebook(){
+  var table = document.getElementById("my-notebook-table");
+  if(!currentEmployee){
+    table.innerHTML = '<tr><td style="padding:8px 4px; font-size:12px; color:var(--text-muted);">Выберите себя в пункте 1, чтобы увидеть свои записи</td></tr>';
+    return;
+  }
+  var mine = [];
+  for(var i=0;i<worklog.length;i++){
+    if(worklog[i].employee === currentEmployee) mine.push(worklog[i]);
+  }
+  if(mine.length === 0){
+    table.innerHTML = '<tr><td style="padding:8px 4px; font-size:12px; color:var(--text-muted);">Пока ничего не отмечено — напишите первую запись в пункте 2</td></tr>';
+    return;
+  }
+  var html = '<tr><th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Дата</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Авто</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Запись</th>'
+    + '<th style="text-align:right; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Тип</th></tr>';
+  for(var m=0;m<mine.length;m++){
+    var en = mine[m];
+    var typeBadge = en.type === "rework"
+      ? '<span class="c-coral" style="font-size:11px; padding:2px 6px; border-radius:4px;">переделка</span>'
+      : '<span style="font-size:11px; color:var(--text-secondary);">выполнено</span>';
+    html += '<tr>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary); vertical-align:top; white-space:nowrap;">'+en.date+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); vertical-align:top;">'+en.car+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border);">'+en.text+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); text-align:right; vertical-align:top;">'+typeBadge+'</td>'
+      + '</tr>';
+  }
+  table.innerHTML = html;
+}
+
+function renderHistoryCarSelect(){
+  var sel = document.getElementById("history-car-select");
+  var html = "";
+  for(var i=0;i<orders.length;i++){
+    html += '<option value="'+orders[i].id+'" '+(orders[i].id===historyOrderId?"selected":"")+'>'+orders[i].model+' · '+orders[i].plate+'</option>';
+  }
+  sel.innerHTML = html;
+  sel.addEventListener("change", function(){
+    historyOrderId = parseInt(this.value, 10);
+    renderHistory();
+  });
+}
+
+function renderHistory(){
+  var entries = [];
+  for(var i=0;i<worklog.length;i++){
+    if(worklog[i].orderId === historyOrderId) entries.push(worklog[i]);
+  }
+
+  var summary = {};
+  for(var e=0;e<entries.length;e++){
+    var emp = entries[e].employee;
+    if(!summary[emp]) summary[emp] = {done:0, rework:0};
+    if(entries[e].type === "rework") summary[emp].rework++; else summary[emp].done++;
+  }
+  var summaryHtml = "";
+  for(var name in summary){
+    var s = summary[name];
+    var text = s.done+" запис."+(s.rework>0? " + "+s.rework+" переделка":"");
+    summaryHtml += '<span style="background:var(--surface-1); border-radius:var(--radius); padding:6px 10px; font-size:12px;">'+name+': '+text+'</span>';
+  }
+  document.getElementById("history-summary").innerHTML = summaryHtml || '<span style="font-size:12px; color:var(--text-muted);">Работ по этому авто ещё не отмечено</span>';
+
+  var tableHtml = '<tr><th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Дата</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Сотрудник</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Запись</th>'
+    + '<th style="text-align:right; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Тип</th></tr>';
+  for(var t=0;t<entries.length;t++){
+    var en = entries[t];
+    var typeBadge = en.type === "rework"
+      ? '<span class="c-coral" style="font-size:11px; padding:2px 6px; border-radius:4px;">переделка</span>'
+      : '<span style="font-size:11px; color:var(--text-secondary);">выполнено</span>';
+    tableHtml += '<tr>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary); vertical-align:top; white-space:nowrap;">'+en.date+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); vertical-align:top;">'+en.employee+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border);">'+en.text+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); text-align:right; vertical-align:top;">'+typeBadge+'</td>'
+      + '</tr>';
+  }
+  document.getElementById("history-table").innerHTML = tableHtml;
+}
+
+function showTab(name){
+  var screens = ["board","intake","detail","procurement","worklog","history"];
+  for(var i=0;i<screens.length;i++){
+    document.getElementById("screen-"+screens[i]).style.display = (screens[i]===name) ? "block" : "none";
+  }
+  var btns = document.querySelectorAll(".tab-btn");
+  for(var j=0;j<btns.length;j++){
+    var active = btns[j].getAttribute("data-tab") === name;
+    btns[j].style.background = active ? "var(--bg-accent)" : "";
+    btns[j].style.borderColor = active ? "var(--brand-red)" : "";
+    btns[j].style.color = active ? "var(--brand-red)" : "";
+    btns[j].style.fontWeight = active ? "500" : "";
+  }
+}
+
+var tabBtns = document.querySelectorAll(".tab-btn");
+for(var t=0;t<tabBtns.length;t++){
+  tabBtns[t].addEventListener("click", function(){ showTab(this.getAttribute("data-tab")); });
+}
+
+document.getElementById("add-item-btn").addEventListener("click", function(){
+  var nameInput = document.getElementById("new-item-name");
+  var typeSelect = document.getElementById("new-item-type");
+  if(nameInput.value.trim() === "") return;
+  intakeItems.push({name: nameInput.value.trim(), type: typeSelect.value});
+  nameInput.value = "";
+  renderIntake();
+});
+
+document.getElementById("save-worklog-btn").addEventListener("click", function(){
+  if(!currentEmployee){
+    alert("Сначала выберите себя в пункте 1");
+    return;
+  }
+  var textArea = document.getElementById("worklog-text");
+  var reworkBox = document.getElementById("worklog-rework");
+  var text = textArea.value.trim();
+  if(text === "") return;
+  var o = findOrder(worklogCarId);
+  var now = new Date();
+  var dd = (now.getDate()<10?"0":"")+now.getDate();
+  var mm = (now.getMonth()+1<10?"0":"")+(now.getMonth()+1);
+  var yyyy = now.getFullYear();
+  worklog.unshift({
+    date: dd+"."+mm+"."+yyyy,
+    employee: currentEmployee,
+    orderId: worklogCarId,
+    car: o.model+" · "+o.plate,
+    text: text,
+    type: reworkBox.checked ? "rework" : "done"
+  });
+  textArea.value = "";
+  reworkBox.checked = false;
+  renderMyNotebook();
+  renderHistory();
+});
+
+renderBoard();
+renderIntake();
+renderDetail();
+renderProcurement();
+renderEmployeePicker();
+renderWorklogCarSelect();
+renderMyNotebook();
+renderHistoryCarSelect();
+renderHistory();
+showTab("board");
+
+})();
+</script>
+
+
+</body>
+</html>
