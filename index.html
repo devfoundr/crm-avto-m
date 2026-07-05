@@ -28,11 +28,11 @@
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; background:var(--surface-0); color:var(--text-primary); font-family:var(--font-sans); }
   body{ padding:24px; max-width:1150px; margin:0 auto; }
-  h1{ font-size:20px; font-weight:500; margin:0 0 4px; }
-  .subtitle{ font-size:13px; color:var(--text-secondary); margin:0 0 20px; }
+  h1{ font-size:22px; font-weight:500; margin:0 0 4px; }
+  .subtitle{ font-size:15px; color:var(--text-secondary); margin:0 0 20px; }
   .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
   button{
-    font-family:var(--font-sans); font-size:14px; background:transparent; color:var(--text-primary);
+    font-family:var(--font-sans); font-size:16px; background:transparent; color:var(--text-primary);
     border:0.5px solid var(--border-strong); border-radius:var(--radius); padding:8px 14px; cursor:pointer;
   }
   button:hover{ background:var(--surface-1); }
@@ -43,13 +43,13 @@
   .employee-btn.emp-active, .filter-btn.filter-active{ background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red); }
   .brand-header{ display:flex; align-items:center; gap:12px; margin-bottom:2px; }
   .brand-header svg{ height:34px; width:auto; flex-shrink:0; }
-  .brand-wordmark{ font-size:20px; font-weight:800; letter-spacing:0.2px; line-height:1; }
+  .brand-wordmark{ font-size:22px; font-weight:800; letter-spacing:0.2px; line-height:1; }
   .brand-wordmark .b{ color:var(--brand-black); }
   .brand-wordmark .r{ color:var(--brand-red); }
   .brand-divider{ width:1px; height:26px; background:var(--border-strong); margin:0 2px; }
   .brand-header h1{ margin:0; }
   input[type="text"], select, textarea{
-    font-family:var(--font-sans); font-size:14px; color:var(--text-primary);
+    font-family:var(--font-sans); font-size:16px; color:var(--text-primary);
     border:0.5px solid var(--border); border-radius:var(--radius); background:var(--fill-field);
     height:36px; padding:0 10px;
   }
@@ -173,26 +173,26 @@
 
 <div id="screen-intake">
   <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
-    <div style="font-size:15px; font-weight:500; margin-bottom:12px;">Новый заказ</div>
+    <div style="font-size:17px; font-weight:500; margin-bottom:12px;">Новый заказ</div>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
-      <div><label style="font-size:12px; color:var(--text-secondary); display:block; margin-bottom:4px;">Автомобиль</label><input type="text" value="Skoda Kodiaq Active, К147ХО152" style="width:100%;" /></div>
-      <div><label style="font-size:12px; color:var(--text-secondary); display:block; margin-bottom:4px;">Страховая компания</label><input type="text" value="ПАО Группа Ренессанс Страхование" style="width:100%;" /></div>
+      <div><label style="font-size:14px; color:var(--text-secondary); display:block; margin-bottom:4px;">Автомобиль</label><input type="text" value="Skoda Kodiaq Active, К147ХО152" style="width:100%;" /></div>
+      <div><label style="font-size:14px; color:var(--text-secondary); display:block; margin-bottom:4px;">Страховая компания</label><input type="text" value="ПАО Группа Ренессанс Страхование" style="width:100%;" /></div>
     </div>
-    <div style="border:1px dashed var(--border-strong); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:10px; margin-bottom:16px; color:var(--text-secondary); font-size:13px;">
-      <span style="font-size:18px;" aria-hidden="true">📎</span>
+    <div style="border:1px dashed var(--border-strong); border-radius:var(--radius); padding:16px; display:flex; align-items:center; gap:10px; margin-bottom:16px; color:var(--text-secondary); font-size:15px;">
+      <span style="font-size:20px;" aria-hidden="true">📎</span>
       Калькуляция_OSG-26-074050.pdf приложена как основание — сама по себе в наряд не превращается
     </div>
-    <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">Мастер вносит только то, что реально идёт в работу — без вычёркивания лишнего</div>
+    <div style="font-size:15px; color:var(--text-secondary); margin-bottom:8px;">Мастер вносит только то, что реально идёт в работу — без вычёркивания лишнего</div>
     <div id="intake-items" style="margin-bottom:10px;"></div>
     <div style="display:flex; gap:8px; align-items:flex-end;">
-      <div style="flex:1;"><label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Наименование позиции</label><input type="text" id="new-item-name" placeholder="Крыло П Л — заменить" style="width:100%;" /></div>
-      <div style="width:120px;"><label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Тип</label>
+      <div style="flex:1;"><label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Наименование позиции</label><input type="text" id="new-item-name" placeholder="Крыло П Л — заменить" style="width:100%;" /></div>
+      <div style="width:120px;"><label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Тип</label>
         <select id="new-item-type" style="width:100%;">
           <option value="Деталь">Деталь</option>
           <option value="Работа">Работа</option>
         </select>
       </div>
-      <button id="add-item-btn" aria-label="Добавить позицию" style="font-size:16px; font-weight:700;">+</button>
+      <button id="add-item-btn" aria-label="Добавить позицию" style="font-size:18px; font-weight:700;">+</button>
     </div>
     <button class="btn-primary" style="margin-top:16px;" id="create-order-btn"><span style="margin-right:4px;" aria-hidden="true">✓</span>Сформировать наряд-заказ</button>
   </div>
@@ -202,8 +202,8 @@
 
 <div id="screen-procurement">
   <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
-    <div style="font-size:15px; font-weight:500; margin-bottom:4px;">Снабжение — очередь по всем заказам</div>
-    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Экран Егора, по одной группе на каждый автомобиль с доски цеха. Клик по статусу переключает его — сразу видно мастеру и цеху в урезанном виде, без артикула и цены.</div>
+    <div style="font-size:17px; font-weight:500; margin-bottom:4px;">Снабжение — очередь по всем заказам</div>
+    <div style="font-size:14px; color:var(--text-secondary); margin-bottom:12px;">Экран Егора, по одной группе на каждый автомобиль с доски цеха. Клик по статусу переключает его — сразу видно мастеру и цеху в урезанном виде, без артикула и цены.</div>
     <div id="procurement-filters" style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;"></div>
     <div id="procurement-list"></div>
   </div>
@@ -211,38 +211,38 @@
 
 <div id="screen-worklog">
   <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem; margin-bottom:12px;">
-    <div style="font-size:15px; font-weight:500; margin-bottom:4px;">1. Кто у терминала</div>
-    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">Сотрудник подтверждает себя бейджем/PIN.</div>
+    <div style="font-size:17px; font-weight:500; margin-bottom:4px;">1. Кто у терминала</div>
+    <div style="font-size:14px; color:var(--text-secondary); margin-bottom:12px;">Сотрудник подтверждает себя бейджем/PIN.</div>
     <div id="employee-picker" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
   </div>
 
   <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem; margin-bottom:12px;">
-    <div style="font-size:15px; font-weight:500; margin-bottom:2px;">2. Новая запись</div>
-    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Выбирает машину и своими словами пишет, что сделал — как раньше в тетради.</div>
+    <div style="font-size:17px; font-weight:500; margin-bottom:2px;">2. Новая запись</div>
+    <div style="font-size:14px; color:var(--text-secondary); margin-bottom:10px;">Выбирает машину и своими словами пишет, что сделал — как раньше в тетради.</div>
     <div style="margin-bottom:10px;">
-      <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Машина</label>
+      <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Машина</label>
       <select id="worklog-car-select" style="width:100%;"></select>
     </div>
     <div style="margin-bottom:10px;">
-      <label style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:4px;">Что сделали</label>
-      <textarea id="worklog-text" rows="3" style="width:100%; font-family:var(--font-sans); font-size:14px; padding:8px 10px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--fill-field); resize:vertical;" placeholder="Передний бампер - снятие, разборка, ремонт. Переднее левое крыло - снятие, ремонт"></textarea>
+      <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Что сделали</label>
+      <textarea id="worklog-text" rows="3" style="width:100%; font-family:var(--font-sans); font-size:16px; padding:8px 10px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--fill-field); resize:vertical;" placeholder="Передний бампер - снятие, разборка, ремонт. Переднее левое крыло - снятие, ремонт"></textarea>
     </div>
-    <label style="display:flex; align-items:center; gap:6px; font-size:13px; margin-bottom:12px;">
+    <label style="display:flex; align-items:center; gap:6px; font-size:15px; margin-bottom:12px;">
       <input type="checkbox" id="worklog-rework" style="width:16px; height:16px;" /> Это переделка
     </label>
     <button class="btn-primary" id="save-worklog-btn"><span style="margin-right:4px;" aria-hidden="true">✓</span>Сохранить запись</button>
   </div>
 
   <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
-    <div style="font-size:15px; font-weight:500; margin-bottom:2px;">3. Мой блокнот</div>
-    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:10px;">То, что раньше писали от руки в тетради. Каждая сохранённая запись падает сюда сама, с датой.</div>
+    <div style="font-size:17px; font-weight:500; margin-bottom:2px;">3. Мой блокнот</div>
+    <div style="font-size:14px; color:var(--text-secondary); margin-bottom:10px;">То, что раньше писали от руки в тетради. Каждая сохранённая запись падает сюда сама, с датой.</div>
     <table style="width:100%; font-size:13px; border-collapse:collapse;" id="my-notebook-table"></table>
   </div>
 </div>
 
 <div id="screen-history">
   <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">
-    <div style="font-size:15px; font-weight:500; margin-bottom:10px;">Все работы по конкретному авто</div>
+    <div style="font-size:17px; font-weight:500; margin-bottom:10px;">Все работы по конкретному авто</div>
     <select id="history-car-select" style="width:100%; margin-bottom:14px;"></select>
     <div id="history-summary" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;"></div>
     <table style="width:100%; font-size:13px; border-collapse:collapse;" id="history-table"></table>
@@ -355,12 +355,12 @@ function procBadge(p){
   if(p === "na") return "";
   var m = statusMeta[p];
   if(!m) return "";
-  return '<span class="'+m.cls+'" style="font-size:11px; padding:2px 6px; border-radius:4px; margin-left:6px; white-space:nowrap; display:inline-block;">'+m.label+'</span>';
+  return '<span class="'+m.cls+'" style="font-size:13px; padding:2px 6px; border-radius:4px; margin-left:6px; white-space:nowrap; display:inline-block;">'+m.label+'</span>';
 }
 
 function statusButton(p, orderId, itemIdx){
   var m = statusMeta[p] || statusMeta.not_ordered;
-  return '<button class="status-btn '+m.cls+'" data-order="'+orderId+'" data-idx="'+itemIdx+'" style="font-size:11px; padding:4px 10px; border-radius:4px; white-space:nowrap;">'+m.label+'</button>';
+  return '<button class="status-btn '+m.cls+'" data-order="'+orderId+'" data-idx="'+itemIdx+'" style="font-size:13px; padding:4px 10px; border-radius:4px; white-space:nowrap;">'+m.label+'</button>';
 }
 
 function findOrder(id){
@@ -385,21 +385,21 @@ function renderCard(o){
   var doneCount = 0;
   for(var i=0;i<o.items.length;i++){ if(o.items[i].done) doneCount++; }
   var pct = o.items.length ? Math.round(100*doneCount/o.items.length) : 0;
-  var alertHtml = o.alert ? '<div style="display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; color:var(--text-danger); margin-bottom:6px;"><span aria-hidden="true">⚠</span>Вызвать мастера</div>' : "";
+  var alertHtml = o.alert ? '<div style="display:flex; align-items:center; gap:5px; font-size:15px; font-weight:600; color:var(--text-danger); margin-bottom:6px;"><span aria-hidden="true">⚠</span>Вызвать мастера</div>' : "";
 
   var idx = stageIndex(o.stage);
   var pending = procurementPendingCount(o.id);
   var pendingLabel = pending===1 ? "позиция" : (pending>=2 && pending<=4 ? "позиции" : "позиций");
   var pendingBadge = pending>0
-    ? '<div style="margin-top:9px; padding-top:8px; border-top:0.5px dashed var(--border);"><span class="c-amber" title="'+pending+' '+pendingLabel+' по этой машине ещё в снабжении — цех её не ждёт" style="font-size:12px; font-weight:600; padding:4px 8px; border-radius:5px; white-space:nowrap;">в снабж.: '+pending+'</span></div>'
+    ? '<div style="margin-top:9px; padding-top:8px; border-top:0.5px dashed var(--border);"><span class="c-amber" title="'+pending+' '+pendingLabel+' по этой машине ещё в снабжении — цех её не ждёт" style="font-size:14px; font-weight:600; padding:4px 8px; border-radius:5px; white-space:nowrap;">в снабж.: '+pending+'</span></div>'
     : '';
 
   return '<div class="order-card" data-id="'+o.id+'" draggable="true" style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:14px; padding:14px; cursor:grab;">'
     + alertHtml
-    + '<div style="font-size:16px; font-weight:600; margin-bottom:3px; line-height:1.25;">'+o.model+'</div>'
-    + '<div style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">'+o.plate+'</div>'
+    + '<div style="font-size:18px; font-weight:600; margin-bottom:3px; line-height:1.25;">'+o.model+'</div>'
+    + '<div style="font-size:15px; color:var(--text-secondary); margin-bottom:10px;">'+o.plate+'</div>'
     + '<div style="height:6px; background:var(--surface-1); border-radius:5px; overflow:hidden; margin-bottom:8px;"><div style="height:100%; width:'+pct+'%; background:var(--fill-success);"></div></div>'
-    + '<div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--text-secondary);">'
+    + '<div style="display:flex; justify-content:space-between; align-items:center; font-size:15px; color:var(--text-secondary);">'
     + '<span>'+doneCount+'/'+o.items.length+'</span>'
     + '<span><span style="margin-right:2px;" aria-hidden="true">📅</span>'+o.due+'</span>'
     + '</div>'
@@ -418,8 +418,8 @@ function renderBoard(){
     for(var j=0;j<list.length;j++){ cardsHtml += renderCard(list[j]); }
     html += '<div style="display:flex; flex-direction:column; gap:10px;">'
       + '<div style="display:flex; align-items:baseline; gap:6px; margin-bottom:2px; padding-bottom:6px; border-bottom:1.5px solid var(--border-strong);">'
-      + '<span style="font-size:14px; font-weight:600;">'+stage.name+'</span>'
-      + '<span style="font-size:12px; color:var(--text-muted);">'+list.length+'</span>'
+      + '<span style="font-size:16px; font-weight:600;">'+stage.name+'</span>'
+      + '<span style="font-size:14px; color:var(--text-muted);">'+list.length+'</span>'
       + '</div>'
       + '<div class="stage-column" data-stage="'+stage.id+'" style="display:flex; flex-direction:column; gap:10px; min-height:60px; border-radius:12px; padding:5px; border:1.5px dashed transparent; transition:background 0.1s, border-color 0.1s;">'
       + cardsHtml
@@ -483,16 +483,16 @@ var intakeItems = [
 function renderIntake(){
   var wrap = document.getElementById("intake-items");
   if(intakeItems.length === 0){
-    wrap.innerHTML = '<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">Позиций пока нет — добавьте ниже</div>';
+    wrap.innerHTML = '<div style="font-size:14px; color:var(--text-muted); padding:8px 0;">Позиций пока нет — добавьте ниже</div>';
     return;
   }
   var html = "";
   for(var i=0;i<intakeItems.length;i++){
     var it = intakeItems[i];
-    html += '<div style="display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:0.5px solid var(--border); font-size:13px;">'
+    html += '<div style="display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:0.5px solid var(--border); font-size:15px;">'
       + '<span style="flex:1;">'+it.name+'</span>'
-      + '<span style="font-size:11px; color:var(--text-secondary);">'+it.type+'</span>'
-      + '<button data-idx="'+i+'" class="remove-item-btn" aria-label="Удалить позицию" style="padding:4px 9px; font-size:13px; font-weight:700;">✕</button>'
+      + '<span style="font-size:13px; color:var(--text-secondary);">'+it.type+'</span>'
+      + '<button data-idx="'+i+'" class="remove-item-btn" aria-label="Удалить позицию" style="padding:4px 9px; font-size:15px; font-weight:700;">✕</button>'
       + '</div>';
   }
   wrap.innerHTML = html;
@@ -511,23 +511,23 @@ function renderDetail(){
   var itemsHtml = "";
   for(var idx=0; idx<o.items.length; idx++){
     var it = o.items[idx];
-    itemsHtml += '<div style="display:flex; align-items:center; gap:8px; padding:9px 0; border-bottom:0.5px solid var(--border); font-size:13px;">'
+    itemsHtml += '<div style="display:flex; align-items:center; gap:8px; padding:9px 0; border-bottom:0.5px solid var(--border); font-size:15px;">'
       + '<input type="checkbox" '+(it.done?"checked":"")+' data-idx="'+idx+'" class="detail-check" style="width:16px; height:16px;" />'
       + '<span style="flex:1; '+(it.done?"color:var(--text-secondary); text-decoration:line-through;":"")+'">'+it.name+'</span>'
       + procBadge(it.procurement)
-      + '<button data-idx="'+idx+'" class="photo-btn" style="padding:4px 8px; font-size:13px;">📷</button>'
+      + '<button data-idx="'+idx+'" class="photo-btn" style="padding:4px 8px; font-size:15px;">📷</button>'
       + '</div>';
   }
 
   document.getElementById("screen-detail").innerHTML =
     '<div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">'
-    + '<div style="font-size:15px; font-weight:500;">'+o.model+'</div>'
-    + '<div style="font-size:13px; color:var(--text-secondary); margin-bottom:4px;">'+o.plate+' &middot; '+o.insurer+'</div>'
-    + '<div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;"><span style="margin-right:3px;" aria-hidden="true">📅</span>Срок выдачи '+o.due+'</div>'
+    + '<div style="font-size:17px; font-weight:500;">'+o.model+'</div>'
+    + '<div style="font-size:15px; color:var(--text-secondary); margin-bottom:4px;">'+o.plate+' &middot; '+o.insurer+'</div>'
+    + '<div style="font-size:14px; color:var(--text-secondary); margin-bottom:12px;"><span style="margin-right:3px;" aria-hidden="true">📅</span>Срок выдачи '+o.due+'</div>'
     + '<div>'+itemsHtml+'</div>'
     + '<div style="display:flex; gap:10px; margin-top:12px;">'
-    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:11px; flex-direction:column; gap:4px;"><span style="font-size:20px;" aria-hidden="true">🖼</span>фото дефекта</div>'
-    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:11px; flex-direction:column; gap:4px;"><span style="font-size:20px;" aria-hidden="true">🖼</span>фото результата</div>'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото дефекта</div>'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото результата</div>'
     + '</div>'
     + '</div>';
 
@@ -547,7 +547,7 @@ function renderProcurementFilters(){
   var html = "";
   for(var i=0;i<filters.length;i++){
     var active = activeFilter === filters[i][0];
-    html += '<button class="filter-btn" data-filter="'+filters[i][0]+'" style="font-size:12px; padding:5px 10px; '+(active? "background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red);":"")+'">'+filters[i][1]+'</button>';
+    html += '<button class="filter-btn" data-filter="'+filters[i][0]+'" style="font-size:14px; padding:5px 10px; '+(active? "background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red);":"")+'">'+filters[i][1]+'</button>';
   }
   document.getElementById("procurement-filters").innerHTML = html;
   var btns = document.querySelectorAll(".filter-btn");
@@ -573,15 +573,15 @@ function renderProcurement(){
 
   var html = "";
   if(orderIds.length === 0){
-    html = '<div style="font-size:12px; color:var(--text-muted); padding:12px 0;">Нет позиций с таким статусом</div>';
+    html = '<div style="font-size:14px; color:var(--text-muted); padding:12px 0;">Нет позиций с таким статусом</div>';
   }
   for(var g=0; g<orderIds.length; g++){
     var oid = orderIds[g];
     var o = findOrder(oid);
     var rows = grouped[oid];
     html += '<div style="margin-bottom:16px;">'
-      + '<div style="font-size:13px; font-weight:500; margin-bottom:6px;">'+o.model+' &middot; '+o.plate+'</div>'
-      + '<table style="width:100%; font-size:12px; border-collapse:collapse;">'
+      + '<div style="font-size:15px; font-weight:500; margin-bottom:6px;">'+o.model+' &middot; '+o.plate+'</div>'
+      + '<table style="width:100%; font-size:13px; border-collapse:collapse;">'
       + '<tr>'
       + '<th style="text-align:left; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Деталь</th>'
       + '<th style="text-align:left; padding:5px 4px; color:var(--text-secondary); font-weight:500;">Артикул</th>'
@@ -631,7 +631,7 @@ function renderEmployeePicker(){
   var html = "";
   for(var i=0;i<employees.length;i++){
     var active = employees[i] === currentEmployee;
-    html += '<button class="employee-btn" data-name="'+employees[i]+'" style="font-size:13px; padding:8px 14px; '+(active? "background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red);":"")+'"><span style="margin-right:5px;" aria-hidden="true">👤</span>'+employees[i]+'</button>';
+    html += '<button class="employee-btn" data-name="'+employees[i]+'" style="font-size:15px; padding:8px 14px; '+(active? "background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red);":"")+'"><span style="margin-right:5px;" aria-hidden="true">👤</span>'+employees[i]+'</button>';
   }
   document.getElementById("employee-picker").innerHTML = html;
   var btns = document.querySelectorAll(".employee-btn");
@@ -658,7 +658,7 @@ function renderWorklogCarSelect(){
 function renderMyNotebook(){
   var table = document.getElementById("my-notebook-table");
   if(!currentEmployee){
-    table.innerHTML = '<tr><td style="padding:8px 4px; font-size:12px; color:var(--text-muted);">Выберите себя в пункте 1, чтобы увидеть свои записи</td></tr>';
+    table.innerHTML = '<tr><td style="padding:8px 4px; font-size:14px; color:var(--text-muted);">Выберите себя в пункте 1, чтобы увидеть свои записи</td></tr>';
     return;
   }
   var mine = [];
@@ -666,18 +666,18 @@ function renderMyNotebook(){
     if(worklog[i].employee === currentEmployee) mine.push(worklog[i]);
   }
   if(mine.length === 0){
-    table.innerHTML = '<tr><td style="padding:8px 4px; font-size:12px; color:var(--text-muted);">Пока ничего не отмечено — напишите первую запись в пункте 2</td></tr>';
+    table.innerHTML = '<tr><td style="padding:8px 4px; font-size:14px; color:var(--text-muted);">Пока ничего не отмечено — напишите первую запись в пункте 2</td></tr>';
     return;
   }
-  var html = '<tr><th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Дата</th>'
-    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Авто</th>'
-    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Запись</th>'
-    + '<th style="text-align:right; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Тип</th></tr>';
+  var html = '<tr><th style="text-align:left; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Дата</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Авто</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Запись</th>'
+    + '<th style="text-align:right; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Тип</th></tr>';
   for(var m=0;m<mine.length;m++){
     var en = mine[m];
     var typeBadge = en.type === "rework"
-      ? '<span class="c-coral" style="font-size:11px; padding:2px 6px; border-radius:4px;">переделка</span>'
-      : '<span style="font-size:11px; color:var(--text-secondary);">выполнено</span>';
+      ? '<span class="c-coral" style="font-size:13px; padding:2px 6px; border-radius:4px;">переделка</span>'
+      : '<span style="font-size:13px; color:var(--text-secondary);">выполнено</span>';
     html += '<tr>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary); vertical-align:top; white-space:nowrap;">'+en.date+'</td>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); vertical-align:top;">'+en.car+'</td>'
@@ -717,19 +717,19 @@ function renderHistory(){
   for(var name in summary){
     var s = summary[name];
     var text = s.done+" запис."+(s.rework>0? " + "+s.rework+" переделка":"");
-    summaryHtml += '<span style="background:var(--surface-1); border-radius:var(--radius); padding:6px 10px; font-size:12px;">'+name+': '+text+'</span>';
+    summaryHtml += '<span style="background:var(--surface-1); border-radius:var(--radius); padding:6px 10px; font-size:14px;">'+name+': '+text+'</span>';
   }
-  document.getElementById("history-summary").innerHTML = summaryHtml || '<span style="font-size:12px; color:var(--text-muted);">Работ по этому авто ещё не отмечено</span>';
+  document.getElementById("history-summary").innerHTML = summaryHtml || '<span style="font-size:14px; color:var(--text-muted);">Работ по этому авто ещё не отмечено</span>';
 
-  var tableHtml = '<tr><th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Дата</th>'
-    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Сотрудник</th>'
-    + '<th style="text-align:left; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Запись</th>'
-    + '<th style="text-align:right; padding:6px 4px; font-size:12px; color:var(--text-secondary); font-weight:500;">Тип</th></tr>';
+  var tableHtml = '<tr><th style="text-align:left; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Дата</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Сотрудник</th>'
+    + '<th style="text-align:left; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Запись</th>'
+    + '<th style="text-align:right; padding:6px 4px; font-size:13px; color:var(--text-secondary); font-weight:500;">Тип</th></tr>';
   for(var t=0;t<entries.length;t++){
     var en = entries[t];
     var typeBadge = en.type === "rework"
-      ? '<span class="c-coral" style="font-size:11px; padding:2px 6px; border-radius:4px;">переделка</span>'
-      : '<span style="font-size:11px; color:var(--text-secondary);">выполнено</span>';
+      ? '<span class="c-coral" style="font-size:13px; padding:2px 6px; border-radius:4px;">переделка</span>'
+      : '<span style="font-size:13px; color:var(--text-secondary);">выполнено</span>';
     tableHtml += '<tr>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary); vertical-align:top; white-space:nowrap;">'+en.date+'</td>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); vertical-align:top;">'+en.employee+'</td>'
