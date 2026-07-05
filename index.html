@@ -158,6 +158,11 @@
   </div>
 </div>
 
+<div style="margin-bottom:16px; padding:12px 14px; background:var(--surface-1); border-radius:var(--radius); display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+  <span style="font-size:13px; color:var(--text-secondary); white-space:nowrap;">Смотрю как:</span>
+  <div id="role-picker" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+</div>
+
 <div id="tabs" style="display:flex; gap:8px; margin-bottom:1rem; flex-wrap:wrap;">
   <button data-tab="board" class="tab-btn">Доска цеха</button>
   <button data-tab="intake" class="tab-btn">Приёмка заказа</button>
@@ -430,6 +435,7 @@ function renderBoard(){
   var cards = document.querySelectorAll(".order-card");
   for(var k=0;k<cards.length;k++){
     cards[k].addEventListener("click", function(){
+      if(roleTabs[currentRole].indexOf("detail") === -1) return;
       currentOrderId = parseInt(this.getAttribute("data-id"), 10);
       renderDetail();
       showTab("detail");
@@ -740,6 +746,49 @@ function renderHistory(){
   document.getElementById("history-table").innerHTML = tableHtml;
 }
 
+var roleTabs = {
+  master: ["board","intake","detail"],
+  procurement: ["procurement"],
+  staff: ["board","worklog"],
+  owner: ["board","intake","detail","procurement","worklog","history"]
+};
+var roleLabels = {
+  master: "Мастер",
+  procurement: "Снабжение",
+  staff: "Сотрудник цеха",
+  owner: "Владелец"
+};
+var roleOrder = ["master","procurement","staff","owner"];
+var currentRole = "owner";
+
+function renderRolePicker(){
+  var html = "";
+  for(var i=0;i<roleOrder.length;i++){
+    var r = roleOrder[i];
+    var active = r === currentRole;
+    html += '<button class="role-btn" data-role="'+r+'" style="font-size:13px; padding:7px 13px; '+(active? "background:var(--bg-accent); border-color:var(--brand-red); color:var(--brand-red); font-weight:600;":"")+'">'+roleLabels[r]+'</button>';
+  }
+  document.getElementById("role-picker").innerHTML = html;
+  var btns = document.querySelectorAll(".role-btn");
+  for(var j=0;j<btns.length;j++){
+    btns[j].addEventListener("click", function(){
+      currentRole = this.getAttribute("data-role");
+      applyRole();
+    });
+  }
+}
+
+function applyRole(){
+  renderRolePicker();
+  var allowed = roleTabs[currentRole];
+  var tabBtnsEls = document.querySelectorAll(".tab-btn");
+  for(var i=0;i<tabBtnsEls.length;i++){
+    var tabName = tabBtnsEls[i].getAttribute("data-tab");
+    tabBtnsEls[i].style.display = allowed.indexOf(tabName) > -1 ? "" : "none";
+  }
+  showTab(allowed[0]);
+}
+
 function showTab(name){
   var screens = ["board","intake","detail","procurement","worklog","history"];
   for(var i=0;i<screens.length;i++){
@@ -757,7 +806,10 @@ function showTab(name){
 
 var tabBtns = document.querySelectorAll(".tab-btn");
 for(var t=0;t<tabBtns.length;t++){
-  tabBtns[t].addEventListener("click", function(){ showTab(this.getAttribute("data-tab")); });
+  tabBtns[t].addEventListener("click", function(){
+    if(this.style.display === "none") return;
+    showTab(this.getAttribute("data-tab"));
+  });
 }
 
 document.getElementById("add-item-btn").addEventListener("click", function(){
@@ -806,7 +858,7 @@ renderWorklogCarSelect();
 renderMyNotebook();
 renderHistoryCarSelect();
 renderHistory();
-showTab("board");
+applyRole();
 
 })();
 </script>
