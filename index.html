@@ -27,8 +27,7 @@
   }
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; background:var(--surface-0); color:var(--text-primary); font-family:var(--font-sans); }
-  body{ padding:24px; max-width:900px; margin:0 auto; transition:max-width 0.15s; }
-  body.board-mode{ max-width:1700px; }
+  body{ padding:24px; max-width:900px; margin:0 auto; }
   h1{ font-size:20px; font-weight:500; margin:0 0 4px; }
   .subtitle{ font-size:13px; color:var(--text-secondary); margin:0 0 20px; }
   .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
@@ -169,7 +168,7 @@
 </div>
 
 <div id="screen-board">
-  <div style="display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:20px;" id="board"></div>
+  <div style="display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:10px;" id="board"></div>
 </div>
 
 <div id="screen-intake">
@@ -386,23 +385,23 @@ function renderCard(o){
   var doneCount = 0;
   for(var i=0;i<o.items.length;i++){ if(o.items[i].done) doneCount++; }
   var pct = o.items.length ? Math.round(100*doneCount/o.items.length) : 0;
-  var alertHtml = o.alert ? '<div style="display:flex; align-items:center; gap:6px; font-size:15px; font-weight:600; color:var(--text-danger); margin-bottom:8px;"><span aria-hidden="true">⚠</span>Вызвать мастера</div>' : "";
+  var alertHtml = o.alert ? '<div style="display:flex; align-items:center; gap:4px; font-size:11px; color:var(--text-danger); margin-bottom:6px;"><span aria-hidden="true">⚠</span>Вызвать мастера</div>' : "";
 
   var idx = stageIndex(o.stage);
   var pending = procurementPendingCount(o.id);
   var pendingLabel = pending===1 ? "позиция" : (pending>=2 && pending<=4 ? "позиции" : "позиций");
   var pendingBadge = pending>0
-    ? '<div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--border);"><span class="c-amber" title="'+pending+' '+pendingLabel+' по этой машине ещё в снабжении — цех её не ждёт" style="font-size:14px; font-weight:600; padding:5px 10px; border-radius:6px; white-space:nowrap;">в снабж.: '+pending+'</span></div>'
+    ? '<div style="margin-top:8px; padding-top:7px; border-top:0.5px dashed var(--border);"><span class="c-amber" title="'+pending+' '+pendingLabel+' по этой машине ещё в снабжении — цех её не ждёт" style="font-size:10px; font-weight:600; padding:3px 7px; border-radius:4px; white-space:nowrap;">в снабж.: '+pending+'</span></div>'
     : '';
 
-  return '<div class="order-card" data-id="'+o.id+'" draggable="true" style="background:var(--surface-2); border:1px solid var(--border); border-radius:16px; padding:20px; cursor:grab;">'
+  return '<div class="order-card" data-id="'+o.id+'" draggable="true" style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:10px; cursor:grab;">'
     + alertHtml
-    + '<div style="font-size:22px; font-weight:700; margin-bottom:4px; line-height:1.25;">'+o.model+'</div>'
-    + '<div style="font-size:17px; color:var(--text-secondary); margin-bottom:14px;">'+o.plate+'</div>'
-    + '<div style="height:10px; background:var(--surface-1); border-radius:6px; overflow:hidden; margin-bottom:10px;"><div style="height:100%; width:'+pct+'%; background:var(--fill-success);"></div></div>'
-    + '<div style="display:flex; justify-content:space-between; align-items:center; font-size:16px; color:var(--text-secondary);">'
+    + '<div style="font-size:13px; font-weight:500; margin-bottom:2px;">'+o.model+'</div>'
+    + '<div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">'+o.plate+'</div>'
+    + '<div style="height:4px; background:var(--surface-1); border-radius:4px; overflow:hidden; margin-bottom:6px;"><div style="height:100%; width:'+pct+'%; background:var(--fill-success);"></div></div>'
+    + '<div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-secondary);">'
     + '<span>'+doneCount+'/'+o.items.length+'</span>'
-    + '<span><span style="margin-right:3px;" aria-hidden="true">📅</span>'+o.due+'</span>'
+    + '<span><span style="margin-right:2px;" aria-hidden="true">📅</span>'+o.due+'</span>'
     + '</div>'
     + pendingBadge
     + '</div>';
@@ -417,12 +416,12 @@ function renderBoard(){
     for(var i=0;i<orders.length;i++){ if(orders[i].stage===stage.id) list.push(orders[i]); }
     var cardsHtml = "";
     for(var j=0;j<list.length;j++){ cardsHtml += renderCard(list[j]); }
-    html += '<div style="display:flex; flex-direction:column; gap:14px;">'
-      + '<div style="display:flex; align-items:baseline; gap:8px; margin-bottom:2px; padding-bottom:8px; border-bottom:2px solid var(--border-strong);">'
-      + '<span style="font-size:19px; font-weight:700;">'+stage.name+'</span>'
-      + '<span style="font-size:15px; color:var(--text-muted);">'+list.length+'</span>'
+    html += '<div style="display:flex; flex-direction:column; gap:8px;">'
+      + '<div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">'
+      + '<span style="font-size:12px; font-weight:500;">'+stage.name+'</span>'
+      + '<span style="font-size:11px; color:var(--text-muted);">'+list.length+'</span>'
       + '</div>'
-      + '<div class="stage-column" data-stage="'+stage.id+'" style="display:flex; flex-direction:column; gap:14px; min-height:80px; border-radius:14px; padding:6px; border:2px dashed transparent; transition:background 0.1s, border-color 0.1s;">'
+      + '<div class="stage-column" data-stage="'+stage.id+'" style="display:flex; flex-direction:column; gap:8px; min-height:60px; border-radius:10px; padding:4px; border:1.5px dashed transparent; transition:background 0.1s, border-color 0.1s;">'
       + cardsHtml
       + '</div></div>';
   }
@@ -746,7 +745,6 @@ function showTab(name){
   for(var i=0;i<screens.length;i++){
     document.getElementById("screen-"+screens[i]).style.display = (screens[i]===name) ? "block" : "none";
   }
-  document.body.classList.toggle("board-mode", name === "board");
   var btns = document.querySelectorAll(".tab-btn");
   for(var j=0;j<btns.length;j++){
     var active = btns[j].getAttribute("data-tab") === name;
