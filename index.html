@@ -27,8 +27,7 @@
   }
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; background:var(--surface-0); color:var(--text-primary); font-family:var(--font-sans); }
-  body{ padding:24px; max-width:900px; margin:0 auto; transition:max-width 0.15s; }
-  body.board-mode{ max-width:1150px; }
+  body{ padding:24px; max-width:1150px; margin:0 auto; }
   h1{ font-size:20px; font-weight:500; margin:0 0 4px; }
   .subtitle{ font-size:13px; color:var(--text-secondary); margin:0 0 20px; }
   .sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
@@ -746,7 +745,6 @@ function showTab(name){
   for(var i=0;i<screens.length;i++){
     document.getElementById("screen-"+screens[i]).style.display = (screens[i]===name) ? "block" : "none";
   }
-  document.body.classList.toggle("board-mode", name === "board");
   var btns = document.querySelectorAll(".tab-btn");
   for(var j=0;j<btns.length;j++){
     var active = btns[j].getAttribute("data-tab") === name;
