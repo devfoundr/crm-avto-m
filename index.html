@@ -173,6 +173,9 @@
 </div>
 
 <div id="screen-board">
+  <div style="margin-bottom:14px; max-width:340px;">
+    <input type="text" id="board-search" placeholder="Поиск по номеру или модели..." style="width:100%;" />
+  </div>
   <div style="display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:14px;" id="board"></div>
 </div>
 
@@ -280,13 +283,15 @@ var orders = [
     id:2, model:"Kia Rio Белый", plate:"М601ТХ152", insurer:"СAO ВСК",
     due:"08.07.2026", stage:"metal", alert:true,
     items:[
-      {name:"Бампер зад - заменить", done:true, procurement:"arrived"},
-      {name:"Спойлер бампера зад - заменить", done:true, procurement:"transit"},
-      {name:"Крыло заднее прав - ремонт", done:false, procurement:"na"},
-      {name:"Уплотнитель крышки багажника - заменить", done:false, procurement:"ordered"},
-      {name:"Надпись Rio - заменить", done:false, procurement:"arrived"},
-      {name:"Эмблема KIA - заменить", done:false, procurement:"ordered"},
-      {name:"Отражатель зад прав - заменить", done:false, procurement:"transit"}
+      {name:"Бампер зад - заменить", done:true, procurement:"arrived", comments:[]},
+      {name:"Спойлер бампера зад - заменить", done:true, procurement:"transit", comments:[]},
+      {name:"Крыло заднее прав - ремонт", done:false, procurement:"na", comments:[
+        {author:"Алексей", date:"02.07.2026", text:"После рихтовки остался небольшой залом у арки, нужна дополнительная шпаклёвка перед покраской"}
+      ]},
+      {name:"Уплотнитель крышки багажника - заменить", done:false, procurement:"ordered", comments:[]},
+      {name:"Надпись Rio - заменить", done:false, procurement:"arrived", comments:[]},
+      {name:"Эмблема KIA - заменить", done:false, procurement:"ordered", comments:[]},
+      {name:"Отражатель зад прав - заменить", done:false, procurement:"transit", comments:[]}
     ]
   },
   {
@@ -412,13 +417,21 @@ function renderCard(o){
     + '</div>';
 }
 
+var boardSearchQuery = "";
+
+function orderMatchesSearch(o){
+  if(!boardSearchQuery) return true;
+  var q = boardSearchQuery.toLowerCase();
+  return o.model.toLowerCase().indexOf(q) > -1 || o.plate.toLowerCase().indexOf(q) > -1;
+}
+
 function renderBoard(){
   var board = document.getElementById("board");
   var html = "";
   for(var s=0; s<stages.length; s++){
     var stage = stages[s];
     var list = [];
-    for(var i=0;i<orders.length;i++){ if(orders[i].stage===stage.id) list.push(orders[i]); }
+    for(var i=0;i<orders.length;i++){ if(orders[i].stage===stage.id && orderMatchesSearch(orders[i])) list.push(orders[i]); }
     var cardsHtml = "";
     for(var j=0;j<list.length;j++){ cardsHtml += renderCard(list[j]); }
     html += '<div style="display:flex; flex-direction:column; gap:10px;">'
@@ -511,19 +524,48 @@ function renderIntake(){
   }
 }
 
+function commentAuthorName(){
+  return currentEmployee || roleLabels[currentRole];
+}
+
+function renderItemComments(idx, it){
+  var comments = it.comments || [];
+  var listHtml = "";
+  for(var c=0;c<comments.length;c++){
+    var cm = comments[c];
+    listHtml += '<div style="font-size:13px; padding:4px 0;"><span style="font-weight:600;">'+cm.author+'</span> <span style="color:var(--text-muted);">'+cm.date+'</span><br>'+cm.text+'</div>';
+  }
+  return '<div style="margin:2px 0 10px 24px; padding:8px 10px; background:var(--surface-1); border-radius:8px;">'
+    + (listHtml || '<div style="font-size:13px; color:var(--text-muted);">Комментариев пока нет</div>')
+    + '<div style="display:flex; gap:6px; margin-top:6px;">'
+    + '<input type="text" class="comment-input" data-idx="'+idx+'" placeholder="Добавить комментарий..." style="flex:1; height:32px; font-size:13px;" />'
+    + '<button class="add-comment-btn" data-idx="'+idx+'" style="padding:5px 10px; font-size:13px;">Добавить</button>'
+    + '</div></div>';
+}
+
 function renderDetail(){
   var o = findOrder(currentOrderId);
   if(!o) return;
+  var isStaffView = currentRole === "staff";
   var itemsHtml = "";
   for(var idx=0; idx<o.items.length; idx++){
     var it = o.items[idx];
-    itemsHtml += '<div style="display:flex; align-items:center; gap:8px; padding:9px 0; border-bottom:0.5px solid var(--border); font-size:15px;">'
-      + '<input type="checkbox" '+(it.done?"checked":"")+' data-idx="'+idx+'" class="detail-check" style="width:16px; height:16px;" />'
-      + '<span style="flex:1; '+(it.done?"color:var(--text-secondary); text-decoration:line-through;":"")+'">'+it.name+'</span>'
+    var checkboxHtml = isStaffView ? "" : '<input type="checkbox" '+(it.done?"checked":"")+' data-idx="'+idx+'" class="detail-check" style="width:16px; height:16px;" />';
+    var photoBtnHtml = isStaffView ? "" : '<button data-idx="'+idx+'" class="photo-btn" style="padding:4px 8px; font-size:15px;">📷</button>';
+    itemsHtml += '<div style="display:flex; align-items:center; gap:8px; padding:9px 0 2px; font-size:15px;">'
+      + checkboxHtml
+      + '<span style="flex:1; '+(it.done && !isStaffView?"color:var(--text-secondary); text-decoration:line-through;":"")+'">'+it.name+'</span>'
       + procBadge(it.procurement)
-      + '<button data-idx="'+idx+'" class="photo-btn" style="padding:4px 8px; font-size:15px;">📷</button>'
-      + '</div>';
+      + photoBtnHtml
+      + '</div>'
+      + renderItemComments(idx, it);
   }
+
+  var photosHtml = isStaffView ? "" :
+    '<div style="display:flex; gap:10px; margin-top:12px;">'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото дефекта</div>'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото результата</div>'
+    + '</div>';
 
   document.getElementById("screen-detail").innerHTML =
     '<div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">'
@@ -531,10 +573,7 @@ function renderDetail(){
     + '<div style="font-size:15px; color:var(--text-secondary); margin-bottom:4px;">'+o.plate+' &middot; '+o.insurer+'</div>'
     + '<div style="font-size:14px; color:var(--text-secondary); margin-bottom:12px;"><span style="margin-right:3px;" aria-hidden="true">📅</span>Срок выдачи '+o.due+'</div>'
     + '<div>'+itemsHtml+'</div>'
-    + '<div style="display:flex; gap:10px; margin-top:12px;">'
-    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото дефекта</div>'
-    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото результата</div>'
-    + '</div>'
+    + photosHtml
     + '</div>';
 
   var checks = document.querySelectorAll(".detail-check");
@@ -543,6 +582,23 @@ function renderDetail(){
       var i2 = parseInt(this.getAttribute("data-idx"), 10);
       o.items[i2].done = this.checked;
       renderBoard();
+      renderDetail();
+    });
+  }
+
+  var commentBtns = document.querySelectorAll(".add-comment-btn");
+  for(var b=0;b<commentBtns.length;b++){
+    commentBtns[b].addEventListener("click", function(){
+      var idx2 = parseInt(this.getAttribute("data-idx"), 10);
+      var input = document.querySelector('.comment-input[data-idx="'+idx2+'"]');
+      var text = input.value.trim();
+      if(text === "") return;
+      if(!o.items[idx2].comments) o.items[idx2].comments = [];
+      var now = new Date();
+      var dd = (now.getDate()<10?"0":"")+now.getDate();
+      var mm = (now.getMonth()+1<10?"0":"")+(now.getMonth()+1);
+      var yyyy = now.getFullYear();
+      o.items[idx2].comments.push({author: commentAuthorName(), date: dd+"."+mm+"."+yyyy, text: text});
       renderDetail();
     });
   }
@@ -749,7 +805,7 @@ function renderHistory(){
 var roleTabs = {
   master: ["board","intake","detail"],
   procurement: ["procurement"],
-  staff: ["board","worklog"],
+  staff: ["board","detail","worklog"],
   owner: ["board","intake","detail","procurement","worklog","history"]
 };
 var roleLabels = {
@@ -811,6 +867,11 @@ for(var t=0;t<tabBtns.length;t++){
     showTab(this.getAttribute("data-tab"));
   });
 }
+
+document.getElementById("board-search").addEventListener("input", function(){
+  boardSearchQuery = this.value.trim();
+  renderBoard();
+});
 
 document.getElementById("add-item-btn").addEventListener("click", function(){
   var nameInput = document.getElementById("new-item-name");
