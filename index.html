@@ -235,6 +235,10 @@
       <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Что сделали</label>
       <textarea id="worklog-text" rows="3" style="width:100%; font-family:var(--font-sans); font-size:16px; padding:8px 10px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--fill-field); resize:vertical;" placeholder="Передний бампер - снятие, разборка, ремонт. Переднее левое крыло - снятие, ремонт"></textarea>
     </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:13px; color:var(--text-secondary); display:block; margin-bottom:4px;">Комментарий (необязательно)</label>
+      <textarea id="worklog-comment" rows="2" style="width:100%; font-family:var(--font-sans); font-size:16px; padding:8px 10px; border:0.5px solid var(--border); border-radius:var(--radius); background:var(--fill-field); resize:vertical;" placeholder="Например: деталь пришла не в цвет, докрашивали на месте"></textarea>
+    </div>
     <label style="display:flex; align-items:center; gap:6px; font-size:15px; margin-bottom:12px;">
       <input type="checkbox" id="worklog-rework" style="width:16px; height:16px;" /> Это переделка
     </label>
@@ -283,15 +287,13 @@ var orders = [
     id:2, model:"Kia Rio Белый", plate:"М601ТХ152", insurer:"СAO ВСК",
     due:"08.07.2026", stage:"metal", alert:true,
     items:[
-      {name:"Бампер зад - заменить", done:true, procurement:"arrived", comments:[]},
-      {name:"Спойлер бампера зад - заменить", done:true, procurement:"transit", comments:[]},
-      {name:"Крыло заднее прав - ремонт", done:false, procurement:"na", comments:[
-        {author:"Алексей", date:"02.07.2026", text:"После рихтовки остался небольшой залом у арки, нужна дополнительная шпаклёвка перед покраской"}
-      ]},
-      {name:"Уплотнитель крышки багажника - заменить", done:false, procurement:"ordered", comments:[]},
-      {name:"Надпись Rio - заменить", done:false, procurement:"arrived", comments:[]},
-      {name:"Эмблема KIA - заменить", done:false, procurement:"ordered", comments:[]},
-      {name:"Отражатель зад прав - заменить", done:false, procurement:"transit", comments:[]}
+      {name:"Бампер зад - заменить", done:true, procurement:"arrived"},
+      {name:"Спойлер бампера зад - заменить", done:true, procurement:"transit"},
+      {name:"Крыло заднее прав - ремонт", done:false, procurement:"na"},
+      {name:"Уплотнитель крышки багажника - заменить", done:false, procurement:"ordered"},
+      {name:"Надпись Rio - заменить", done:false, procurement:"arrived"},
+      {name:"Эмблема KIA - заменить", done:false, procurement:"ordered"},
+      {name:"Отражатель зад прав - заменить", done:false, procurement:"transit"}
     ]
   },
   {
@@ -344,7 +346,7 @@ var currentEmployee = null;
 var worklogCarId = 2;
 
 var worklog = [
-  {date:"02.07.2026", employee:"Алексей", orderId:2, car:"Kia Rio · М601ТХ152", text:"Бампер зад - повторная подгонка после деформации", type:"rework"},
+  {date:"02.07.2026", employee:"Алексей", orderId:2, car:"Kia Rio · М601ТХ152", text:"Бампер зад - повторная подгонка после деформации", comment:"После рихтовки остался небольшой залом у арки, доработали шпаклёвкой перед покраской", type:"rework"},
   {date:"01.07.2026", employee:"Марат", orderId:3, car:"Nissan Tiida · Y172YO152", text:"Бампер зад - подготовка, окраска", type:"done"},
   {date:"01.07.2026", employee:"Виктор", orderId:2, car:"Kia Rio · М601ТХ152", text:"Спойлер бампера зад - снятие, ремонт", type:"done"},
   {date:"30.06.2026", employee:"Виктор", orderId:2, car:"Kia Rio · М601ТХ152", text:"Бампер зад - снятие, разборка, ремонт", type:"done"}
@@ -524,48 +526,19 @@ function renderIntake(){
   }
 }
 
-function commentAuthorName(){
-  return currentEmployee || roleLabels[currentRole];
-}
-
-function renderItemComments(idx, it){
-  var comments = it.comments || [];
-  var listHtml = "";
-  for(var c=0;c<comments.length;c++){
-    var cm = comments[c];
-    listHtml += '<div style="font-size:13px; padding:4px 0;"><span style="font-weight:600;">'+cm.author+'</span> <span style="color:var(--text-muted);">'+cm.date+'</span><br>'+cm.text+'</div>';
-  }
-  return '<div style="margin:2px 0 10px 24px; padding:8px 10px; background:var(--surface-1); border-radius:8px;">'
-    + (listHtml || '<div style="font-size:13px; color:var(--text-muted);">Комментариев пока нет</div>')
-    + '<div style="display:flex; gap:6px; margin-top:6px;">'
-    + '<input type="text" class="comment-input" data-idx="'+idx+'" placeholder="Добавить комментарий..." style="flex:1; height:32px; font-size:13px;" />'
-    + '<button class="add-comment-btn" data-idx="'+idx+'" style="padding:5px 10px; font-size:13px;">Добавить</button>'
-    + '</div></div>';
-}
-
 function renderDetail(){
   var o = findOrder(currentOrderId);
   if(!o) return;
-  var isStaffView = currentRole === "staff";
   var itemsHtml = "";
   for(var idx=0; idx<o.items.length; idx++){
     var it = o.items[idx];
-    var checkboxHtml = isStaffView ? "" : '<input type="checkbox" '+(it.done?"checked":"")+' data-idx="'+idx+'" class="detail-check" style="width:16px; height:16px;" />';
-    var photoBtnHtml = isStaffView ? "" : '<button data-idx="'+idx+'" class="photo-btn" style="padding:4px 8px; font-size:15px;">📷</button>';
-    itemsHtml += '<div style="display:flex; align-items:center; gap:8px; padding:9px 0 2px; font-size:15px;">'
-      + checkboxHtml
-      + '<span style="flex:1; '+(it.done && !isStaffView?"color:var(--text-secondary); text-decoration:line-through;":"")+'">'+it.name+'</span>'
+    itemsHtml += '<div style="display:flex; align-items:center; gap:8px; padding:9px 0; border-bottom:0.5px solid var(--border); font-size:15px;">'
+      + '<input type="checkbox" '+(it.done?"checked":"")+' data-idx="'+idx+'" class="detail-check" style="width:16px; height:16px;" />'
+      + '<span style="flex:1; '+(it.done?"color:var(--text-secondary); text-decoration:line-through;":"")+'">'+it.name+'</span>'
       + procBadge(it.procurement)
-      + photoBtnHtml
-      + '</div>'
-      + renderItemComments(idx, it);
+      + '<button data-idx="'+idx+'" class="photo-btn" style="padding:4px 8px; font-size:15px;">📷</button>'
+      + '</div>';
   }
-
-  var photosHtml = isStaffView ? "" :
-    '<div style="display:flex; gap:10px; margin-top:12px;">'
-    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото дефекта</div>'
-    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото результата</div>'
-    + '</div>';
 
   document.getElementById("screen-detail").innerHTML =
     '<div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:1.25rem;">'
@@ -573,7 +546,10 @@ function renderDetail(){
     + '<div style="font-size:15px; color:var(--text-secondary); margin-bottom:4px;">'+o.plate+' &middot; '+o.insurer+'</div>'
     + '<div style="font-size:14px; color:var(--text-secondary); margin-bottom:12px;"><span style="margin-right:3px;" aria-hidden="true">📅</span>Срок выдачи '+o.due+'</div>'
     + '<div>'+itemsHtml+'</div>'
-    + photosHtml
+    + '<div style="display:flex; gap:10px; margin-top:12px;">'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото дефекта</div>'
+    + '<div style="flex:1; height:120px; background:var(--surface-1); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:13px; flex-direction:column; gap:4px;"><span style="font-size:22px;" aria-hidden="true">🖼</span>фото результата</div>'
+    + '</div>'
     + '</div>';
 
   var checks = document.querySelectorAll(".detail-check");
@@ -582,23 +558,6 @@ function renderDetail(){
       var i2 = parseInt(this.getAttribute("data-idx"), 10);
       o.items[i2].done = this.checked;
       renderBoard();
-      renderDetail();
-    });
-  }
-
-  var commentBtns = document.querySelectorAll(".add-comment-btn");
-  for(var b=0;b<commentBtns.length;b++){
-    commentBtns[b].addEventListener("click", function(){
-      var idx2 = parseInt(this.getAttribute("data-idx"), 10);
-      var input = document.querySelector('.comment-input[data-idx="'+idx2+'"]');
-      var text = input.value.trim();
-      if(text === "") return;
-      if(!o.items[idx2].comments) o.items[idx2].comments = [];
-      var now = new Date();
-      var dd = (now.getDate()<10?"0":"")+now.getDate();
-      var mm = (now.getMonth()+1<10?"0":"")+(now.getMonth()+1);
-      var yyyy = now.getFullYear();
-      o.items[idx2].comments.push({author: commentAuthorName(), date: dd+"."+mm+"."+yyyy, text: text});
       renderDetail();
     });
   }
@@ -743,7 +702,7 @@ function renderMyNotebook(){
     html += '<tr>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary); vertical-align:top; white-space:nowrap;">'+en.date+'</td>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); vertical-align:top;">'+en.car+'</td>'
-      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border);">'+en.text+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border);">'+en.text+(en.comment? '<div style="font-size:12px; color:var(--text-muted); margin-top:3px;">💬 '+en.comment+'</div>':'')+'</td>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); text-align:right; vertical-align:top;">'+typeBadge+'</td>'
       + '</tr>';
   }
@@ -795,7 +754,7 @@ function renderHistory(){
     tableHtml += '<tr>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); color:var(--text-secondary); vertical-align:top; white-space:nowrap;">'+en.date+'</td>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); vertical-align:top;">'+en.employee+'</td>'
-      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border);">'+en.text+'</td>'
+      + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border);">'+en.text+(en.comment? '<div style="font-size:12px; color:var(--text-muted); margin-top:3px;">💬 '+en.comment+'</div>':'')+'</td>'
       + '<td style="padding:6px 4px; border-bottom:0.5px solid var(--border); text-align:right; vertical-align:top;">'+typeBadge+'</td>'
       + '</tr>';
   }
@@ -805,7 +764,7 @@ function renderHistory(){
 var roleTabs = {
   master: ["board","intake","detail"],
   procurement: ["procurement"],
-  staff: ["board","detail","worklog"],
+  staff: ["board","worklog"],
   owner: ["board","intake","detail","procurement","worklog","history"]
 };
 var roleLabels = {
@@ -888,8 +847,10 @@ document.getElementById("save-worklog-btn").addEventListener("click", function()
     return;
   }
   var textArea = document.getElementById("worklog-text");
+  var commentArea = document.getElementById("worklog-comment");
   var reworkBox = document.getElementById("worklog-rework");
   var text = textArea.value.trim();
+  var comment = commentArea.value.trim();
   if(text === "") return;
   var o = findOrder(worklogCarId);
   var now = new Date();
@@ -902,9 +863,11 @@ document.getElementById("save-worklog-btn").addEventListener("click", function()
     orderId: worklogCarId,
     car: o.model+" · "+o.plate,
     text: text,
+    comment: comment,
     type: reworkBox.checked ? "rework" : "done"
   });
   textArea.value = "";
+  commentArea.value = "";
   reworkBox.checked = false;
   renderMyNotebook();
   renderHistory();
